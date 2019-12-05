@@ -1,20 +1,51 @@
-import React from "react";
-import { View, Text, StyleSheet, TextInput, Button } from "react-native";
-import Card from '../Card'
+import React, { useState } from "react";
+import { View, Text, StyleSheet, TextInput, Button, TouchableWithoutFeedback, Keyboard } from "react-native";
+import Card from "../Card";
+import Colors from "../../constants/colors";
+import Input from "../Input";
 
 const StartGameScreen = props => {
+  const [enteredValue, setEnteredValue] = useState('');
+
+  const numberInputHandler = inputText => {
+    setEnteredValue(inputText.replace(/[^0-9]/g), '');
+  }
+
+  const resetInputHandler = () => {
+    setEnteredValue('')
+  }
+
+  const confirmInputHandler = () => {
+    
+  }
+
   return (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     <View style={styles.screen}>
       <Text style={styles.title}>Start a New Game!</Text>
       <Card style={styles.inputContainer}>
         <Text>Select a Number</Text>
-        <TextInput />
+        <Input
+          style={styles.input}
+          blurOnSubmit
+          autoCapitalize="none"
+          keyboardType="number-pad"
+          maxLenght={2}
+          autoCorrect={false}
+          onChangeText={numberInputHandler}
+          value={enteredValue}
+        />
         <View style={styles.buttonContainer}>
-          <Button title="Reset" onPress={() => {}} />
-          <Button title="Confirm" onPress={() => {}} />
+          <View style={styles.button}>
+            <Button title="Reset" onPress={resetInputHandler} color={Colors.accent} />
+          </View>
+          <View style={styles.button}>
+            <Button title="Confirm" onPress={() => {}} color={Colors.primary} />
+          </View>
         </View>
       </Card>
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -22,8 +53,8 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     padding: 10,
-    alignItems: "center",
-    justifyContent: "center"
+    alignItems: "center"
+    // justifyContent: "center"
   },
   buttonContainer: {
     flexDirection: "row",
@@ -35,10 +66,18 @@ const styles = StyleSheet.create({
     width: 300,
     maxWidth: "80%",
     alignItems: "center",
+    padding: 15
   },
   title: {
     fontSize: 20,
     marginVertical: 10
+  },
+  button: {
+    width: 100
+  },
+  input: {
+    width: 50,
+    textAlign: "center"
   }
 });
 
